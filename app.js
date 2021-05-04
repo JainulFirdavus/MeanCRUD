@@ -53,7 +53,7 @@ MongoConnect.connect(() => {
 app.use('/app', express.static(path.join(__dirname, '/app'), { maxAge: 7 * 86400000 })); // 1 day = 86400000 ms
 app.use('/uploads', express.static(path.join(__dirname, '/uploads'), { maxAge: 7 * 86400000 })); // 1 day = 86400000 ms
 app.use(express.static(path.join(__dirname, 'public')));
-require('./routes')(app);
+require('./router')(app);
 
 
 function onError(error) {
