@@ -3,15 +3,22 @@ const db = require('../middleware/mongoconnector');
 module.exports = function (app) {
 
     app.get('/getuserlist', function (req, res, next) {
-        console.log(req.query);
+        // console.log(req.query);
         var data = {}
         if (req.query) {
+            /*  for (var key in req.query) {
+                 if (req.query.hasOwnProperty(key)) {
+                     console.log(key + " -> " + req.query[key]);
+                     data[key] = req.query[key];
+                 }
+             } */
+
             for (const property in req.query) {
-                console.log(`${property}: ${object[property]}`);
-                data[property] = object[property];
+                console.log(`${property}: ${req.query[property]}`);
+                data[property] = req.query[property];
             }
         }
-        db.GetOneDoc('users', data, {}, (err, usersDoc) => {
+        db.GetDocs('users', data, {}, (err, usersDoc) => {
             if (err) {
                 res.send(err)
                 return
@@ -23,8 +30,8 @@ module.exports = function (app) {
 
 
     app.post('/adduser', function (req, res, next) {
-        console.log(req.query);
-        db.InsertDoc('users', { name: req.body.name, email: req.body.email, phone: req.body.phone }, {}, (err, usersDoc) => {
+        console.log(req.body);
+        db.InsertDoc('users', { name: req.body.name, email: req.body.email, phone: req.body.phone }, (err, usersDoc) => {
             if (err) {
                 res.send(err)
                 return
@@ -40,9 +47,8 @@ module.exports = function (app) {
 
 
     app.delete('/deleteuser', function (req, res, next) {
-        console.log(req.query);
-
-        db.DeleteDoc('users', { phone: req.body.phone }, {}, (err, usersDoc) => {
+        console.log(req.body);
+        db.DeleteDoc('users', { phone: req.body.phone }, (err, usersDoc) => {
             if (err) {
                 res.send(err)
                 return
